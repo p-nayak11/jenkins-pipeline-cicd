@@ -4,7 +4,7 @@ const app = express();
 
 // Hello World for index page
 app.get('/', function (req, res) {
-    return res.send("Hello World World from Prabhanjan Nayak!");
+    return res.send("Hello World!");
 })
 // Start the server
 app.listen(port, () => {
