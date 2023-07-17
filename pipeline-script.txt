@@ -5,7 +5,7 @@ pipeline {
 			steps {
 				script {
 					// The below will clone your repo and will be checked out to main branch by default.
-					git([url: 'https://github.com/p-nayak11/jenkins-pipeline-cicd.git', branch: 'main', credentialsId: '9eba816a-bc59-4a4e-a9a3-1fe7ba0ece012'])
+					git([url: 'https://github.com/p-nayak11/jenkins-pipeline-cicd.git', branch: 'main', credentialsId: 'xxxxxxxx'])
 					echo 'Cloning Application Repository'
 				}
 			}
@@ -17,7 +17,7 @@ pipeline {
 			steps {
 				echo '${sonarqubeScannerHome}/bin/sonar-scanner'
 				withSonarQubeEnv('sonarqube') {
-					sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.projectKey='WebApp' -Dsonar.exclusions='**/*.java' -Dsonar.login='admin' -Dsonar.password='S!a2v3i4t5a6m'"
+					sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.projectKey='WebApp' -Dsonar.exclusions='**/*.java' -Dsonar.login='admin' -Dsonar.password='xxxxxxx'"
 				}
 			}
 		}
