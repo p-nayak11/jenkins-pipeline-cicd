@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+	stages {
+	  stage('Checkout') {
+			steps {
+				script {
+					// The below will clone your repo and will be checked out to main branch by default.
+					git([url: 'https://github.com/p-nayak11/jenkins-pipeline-cicd.git', branch: 'main', credentialsId: 'xxxxxxxx'])
+					echo 'Cloning Application Repository'
+				}
+			}
+		}
+		stage ('SonarQube Analysis') {
+			environment {
+				def sonarqubeScannerHome = tool name:'sonarqube'
+			}
+			steps {
+				echo '${sonarqubeScannerHome}/bin/sonar-scanner'
+				withSonarQubeEnv('sonarqube') {
+					sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.projectKey='WebApp' -Dsonar.exclusions='**/*.java' -Dsonar.login='admin' -Dsonar.password='xxxxxxx'"
+				}
+			}
+		}
+		stage('Build') {
+			steps {
+				sh 'docker build --tag helloworld:$BUILD_NUMBER .'
+				sh 'docker stop helloworld && docker rm helloworld'
+				sh 'docker run --name helloworld -p 3000:3000 helloworld:$BUILD_NUMBER node /var/www/index.js &'
+			}
+		}
+	}
+}
