@@ -19,6 +19,7 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
     - NOTE: Modify the credentialsId in the Checkout Stage and the SonarQube password in the SonarQube Analysis Stage.
 10. **Build Now** on Jenkins to create the build directories in the VM.
 11. Create a DockerFile at the location `/var/lib/jenkins/workspace/HelloWorld` and use the script found in dockerfile.txt
+12. **Build Now** on Jenkins to launch the application at `http://<privateIP>:3000`
 
 ## Resources
 [Microsoft Learn Jenkins Pipeline](https://learn.microsoft.com/en-us/azure/developer/jenkins/pipeline-with-github-and-docker)
