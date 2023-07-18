@@ -12,11 +12,12 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
     - [Karen Ngugi's Guide on Installing SonarQube](https://karenngugi.hashnode.dev/installing-sonarqube-on-ubuntu-2204)
     - NOTE: Ensure that the correct user/application and user/passwords are aligned
     - NOTE: Let sonar.web.port = 0.0.0.0 in `/opt/sonarqube/conf/sonar.properties`
-5. Once connected to SonarQube, create a DockerFile at the location `/var/lib/jenkins/workspace/HelloWorld` and use the script found in dockerfile.txt
-6. Create a Github token with the correct access scope for the project. Create a Jenkins credentials with the username and the token.
-7. Create a new pipeline project in Jenkins as a GithHub project. Select trigger builds remotely with any arbitrary token. Select pipeline script and use the script in pipeline-script.txt.
+5. Once connected to SonarQube, setup a project Manually named **WebApp**.
+7. Create a Github token with the correct access scope for the project. Create a Jenkins credentials with the username and the token.
+8. Create a new pipeline project in Jenkins as a GithHub project. Select trigger builds remotely with any arbitrary token. Select pipeline script and use the script in pipeline-script.txt.
     - NOTE: Modify the credentialsId in the Checkout Stage and the SonarQube password in the SonarQube Analysis Stage.
-9. **Build Now** on Jenkins to launch the application at `http://<privateIP>:3000`
+9. Create a DockerFile at the location `/var/lib/jenkins/workspace/HelloWorld` and use the script found in dockerfile.txt
+10. **Build Now** on Jenkins to launch the application at `http://<privateIP>:3000`
 
 ## Resources
 [Microsoft Learn Jenkins Pipeline](https://learn.microsoft.com/en-us/azure/developer/jenkins/pipeline-with-github-and-docker)
