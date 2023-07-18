@@ -6,7 +6,7 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
     - NOTE: Important informaton is missing from the bash script like the `--subnet` flag and the `--admin-password` flag
     - NOTE: The `--recv-keys` is missing in the cloud-init-jenkins.txt file. Fill it in based on VM.
 2. Log into the VM and follow the instructions from the bash script
-3. Open a web browser to `http://<privateIP>:8080`. Finish the setup process and install GitHub and SonarQube as plug-ins.
+3. Open a web browser to `http://<privateIP>:8080`. Finish the setup process and install GitHub as the initial plug-in. Later install SonarQube and Blue Ocean plug-ins.
 4. Download SonarQube to the VM to run quality checks on the web application. Follow the following tutorials:
     - [Install SonarQube Ubuntu 22.04](https://linux.how2shout.com/how-to-install-sonarqube-on-ubuntu-22-04-lts-server/)
     - [Karen Ngugi's Guide on Installing SonarQube](https://karenngugi.hashnode.dev/installing-sonarqube-on-ubuntu-2204)
@@ -16,3 +16,6 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
 7. Create a new pipeline project in Jenkins as a GithHub project. Select trigger builds remotely with any arbitrary token. Select pipeline script and use the script in pipeline-script.txt.
     - NOTE: Modify the credentialsId in the Checkout Stage and the SonarQube password in the SonarQube Analysis Stage.
 9. **Build Now** on Jenkins to launch the application at `http://<privateIP>:3000`
+
+## Resources
+[Microsoft Learn Jenkins Pipeline](https://learn.microsoft.com/en-us/azure/developer/jenkins/pipeline-with-github-and-docker)
