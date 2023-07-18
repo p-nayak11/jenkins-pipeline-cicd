@@ -11,6 +11,7 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
     - [Install SonarQube Ubuntu 22.04](https://linux.how2shout.com/how-to-install-sonarqube-on-ubuntu-22-04-lts-server/)
     - [Karen Ngugi's Guide on Installing SonarQube](https://karenngugi.hashnode.dev/installing-sonarqube-on-ubuntu-2204)
     - NOTE: Ensure that the correct user/application and user/passwords are aligned
+    - NOTE: Let sonar.web.port = 0.0.0.0 in `/opt/sonarqube/conf/sonar.properties`
 5. Once connected to SonarQube, create a DockerFile at the location `/var/lib/jenkins/workspace/HelloWorld` and use the script found in dockerfile.txt
 6. Create a Github token with the correct access scope for the project. Create a Jenkins credentials with the username and the token.
 7. Create a new pipeline project in Jenkins as a GithHub project. Select trigger builds remotely with any arbitrary token. Select pipeline script and use the script in pipeline-script.txt.
