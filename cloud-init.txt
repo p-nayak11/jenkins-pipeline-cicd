@@ -30,19 +30,10 @@ write_files:
        app.listen(3000, function () {
           console.log('Connected! Application is listening on port 3000.')
        });
-       const scanner = require('sonarqube-scanner');
-       scanner (
-           {
-              serverUrl: 'http://localhost:3000'
-           },
-           () => process.exit()
-       )
  runcmd:
    - service nginx restart
    - cd "/home/prabhann"
    - touch index.js
    - npm init
    - npm install express -y
-   - npm install -g sonarqube-scanner@2.9.1
    - nodejs index.js
-   - sonar-scanner
