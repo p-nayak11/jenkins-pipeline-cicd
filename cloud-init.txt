@@ -37,3 +37,4 @@ runcmd:
    - npm init
    - npm install express -y
    - nodejs index.js
+   - echo "qwerty" | sudo 
