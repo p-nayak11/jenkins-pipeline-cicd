@@ -36,5 +36,6 @@ runcmd:
    - touch index.js
    - npm init
    - npm install express -y
-   - nodejs index.js
-   - echo "Qwerty!1234567" | sudo 
+   - npm install -g pm2
+   - echo "Qwerty!234567" | sudo pm2 start index.js -i 3
+   - echo "Qwerty!234567" | sudo pm2 startup
