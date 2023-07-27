@@ -17,8 +17,8 @@ write_files:
             proxy_set_header Connection keep-alive;
             proxy_set_header Host $host;
             proxy_cache_bypass $http_upgrade;
-         }
-       }
+          }
+        }
   - path: /home/prabhann/index.js
     content: |
        var express = require('express');
@@ -30,7 +30,7 @@ write_files:
        app.listen(3000, function () {
           console.log('Connected! Application is listening on port 3000.')
        });
- runcmd:
+runcmd:
    - service nginx restart
    - cd "/home/prabhann"
    - touch index.js
