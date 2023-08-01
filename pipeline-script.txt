@@ -1,11 +1,11 @@
 pipeline {
-  agent any
+	agent any
 	stages {
-	  stage('Checkout') {
+		stage('Checkout') {
 			steps {
 				script {
 					// The below will clone your repo and will be checked out to main branch by default.
-					git([url: 'https://github.com/p-nayak11/jenkins-pipeline-cicd.git', branch: 'main', credentialsId: 'xxxxxxxx'])
+					git([url: 'https://github.com/p-nayak11/jenkins-pipeline-cicd.git', branch: 'main', credentialsId: 'xxxxxx'])
 					echo 'Cloning Application Repository'
 				}
 			}
@@ -17,16 +17,42 @@ pipeline {
 			steps {
 				echo '${sonarqubeScannerHome}/bin/sonar-scanner'
 				withSonarQubeEnv('sonarqube') {
-					sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.projectKey='WebApp' -Dsonar.exclusions='**/*.java' -Dsonar.login='admin' -Dsonar.password='xxxxxxx'"
+					sh "${sonarqubeScannerHome}/bin/sonar-scanner -X -Dsonar.projectKey='WebApp' -Dsonar.exclusions='**/*.java' -Dsonar.login='admin' -Dsonar.password='xxxxxx'"                
 				}
 			}
 		}
-		stage('Build') {
-			steps {
-				sh 'docker build --tag helloworld:$BUILD_NUMBER .'
-				sh 'docker stop helloworld && docker rm helloworld'
-				sh 'docker run --name helloworld -p 3000:3000 helloworld:$BUILD_NUMBER node /var/www/index.js &'
-			}
-		}
+		stage("Azure Login") {
+                        steps{ 
+                                // sh 'az login --identity'
+                                sh 'az group delete --name BGInternal '
+                                sh 'az group create --name BGInternal --location eastus '
+                        }
+                }        
+		stage('Build VMs') {
+	                parallel {
+                                stage('Build Blue') {
+                                        steps {
+                                                sh "az vm create --name pnayakBlue --resource-group BGInternal --image Ubuntu2204 --subnet xxxxxx  --authentication-type all --admin-username xxxxxx --admin-password xxxxxx --public-ip-address '' --custom-data cloud-init.txt"
+                                                sh 'az vm boot-diagnostics enable --name pnayakBlue --resource-group BGInternal'
+                                                sh 'echo "Finished creating Blue VM"'
+                                        }
+                                }
+                                stage('Build Green') {
+                                        steps {
+                                                sh "az vm create --name pnayakGreen --resource-group BGInternal --image Ubuntu2204 --subnet xxxxxx --authentication-type all --admin-username xxxxxx --admin-password xxxxxx --public-ip-address '' --custom-data cloud-init.txt"
+                                                sh 'az vm boot-diagnostics enable --name pnayakGreen --resource-group BGInternal'
+                                                sh 'echo "Finished creating Green VM"'
+                                        }
+                                }
+                        }
+                }
+                stage('Balance Load') {
+		        steps {
+		               sh 'az network lb create -g BGInternal -n InternalLB --sku Standard --subnet xxxxxx'
+                               sh 'az network lb frontend-ip create -g BGInternal -n BGFrontendIp --lb-name InternalLB --zones 1 2 3 --private-ip-address 10.4.104.11 --subnet xxxxxx'
+                               sh "az network lb address-pool create -g BGInternal --lb-name InternalLB -n BGBackendPool --vnet xxxxxx --backend-addresses '[{name:pnayakBlue,ip-address:10.4.104.9},{name:pnayakGreen,ip-address:10.4.104.8,subnet:default-1}]'"
+                               sh 'az network lb rule create -g BGInternal --lb-name InternalLB -n InternalLbRule --protocol Tcp --frontend-ip BGFrontendIP --backend-pool-name BGBackendPool --floating-ip false --frontend-port 3000 --backend-port 3000'		        }
+
+		}  
 	}
 }
