@@ -18,8 +18,8 @@ This repository has all the necessary files for a Jenkins Pipeline that deploys 
 9. Create a new pipeline project in Jenkins as a GithHub project. Select trigger builds remotely with any arbitrary token. Select pipeline script and use the script in pipeline-script.txt.
     - NOTE: Modify the credentialsId in the Checkout Stage and the SonarQube password in the SonarQube Analysis Stage.
 10. **Build Now** on Jenkins to create the build directories in the VM.
-11. Create a DockerFile at the location `/var/lib/jenkins/workspace/HelloWorld` and use the script found in dockerfile.txt
-12. **Build Now** on Jenkins to launch the application at `http://<privateIP>:3000`
+    - NOTE: Authenicate the utility VM by following the url provided in the Azure Login Stage logs. This is only required the first time. 
+11. After a few minutes, check to ensure all the stages have compiled. Check the message at `http://<privateIP>:3000` for each individual VM and for the load balancer's front end. 
 
 ## Resources
 [Microsoft Learn Jenkins Pipeline](https://learn.microsoft.com/en-us/azure/developer/jenkins/pipeline-with-github-and-docker)
